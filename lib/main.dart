@@ -13,7 +13,7 @@ void main() async {
 
   await Hive.initFlutter();
   Hive.registerAdapters();
-  //great
+  //great!
   await todayTaskService.init();
   await recurringTaskService.init();
   await recurringTaskService.resetDailyRoutineIfNeeded();
