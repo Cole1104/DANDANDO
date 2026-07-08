@@ -17,13 +17,6 @@ void main() async {
   await todayTaskService.init();
   await recurringTaskService.init();
   await recurringTaskService.resetDailyRoutineIfNeeded();
-
-  await Hive.openBox("test");
-  final box = Hive.box("test");
-
-  box.put("hello", "world");
-
-  debugPrint(box.get("hello"));
   runApp(const DandandoApp());
 }
 
