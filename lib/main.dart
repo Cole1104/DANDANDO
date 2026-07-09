@@ -11,30 +11,18 @@ import 'models/task.dart';
 import 'services/auth_service.dart';
 import 'services/firestore_service.dart';
 
-final todayTaskService = TaskService();
-final recurringTaskService = TaskService(storageKey: "recurring_tasks");
+final todayTaskService = TaskService(collectionName: "tasks");
+final recurringTaskService = TaskService(collectionName: "recurring_tasks");
 final authService = AuthService();
-final firestoreService = FirestoreService();
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   await authService.signInAnonymously();
-  final testTask = Task(
-    id: "test_task",
-    title: "Firestore 연결 테스트",
-    date: DateTime.now(),
-    createdAt: DateTime.now(),
-  );
-  await firestoreService.addTask(testTask);
-  await FirebaseFirestore.instance.collection("test").add({
-    "message": "Hello DANTE",
-    "time": FieldValue.serverTimestamp(),
-  });
-
-  await todayTaskService.init();
-
-  await recurringTaskService.init();
+  print("UID: ${authService.currentUser?.uid}");
+  todayTaskService.startListening();
+  recurringTaskService.startListening();
   await recurringTaskService.resetDailyRoutineIfNeeded();
 
   runApp(const DandandoApp());

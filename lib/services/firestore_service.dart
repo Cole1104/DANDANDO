@@ -7,6 +7,7 @@ class FirestoreService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   String get uid => _auth.currentUser!.uid;
+
   CollectionReference<Map<String, dynamic>> taskCollection(
     String collectionName,
   ) {
