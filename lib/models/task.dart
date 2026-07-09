@@ -1,6 +1,4 @@
-import 'package:hive_ce/hive.dart';
-
-class Task extends HiveObject {
+class Task {
   String id;
 
   String title;
@@ -17,10 +15,8 @@ class Task extends HiveObject {
 
   DateTime? completedAt;
 
-  @HiveField(8)
   int streak;
 
-  @HiveField(9)
   DateTime? lastCompletedDate;
 
   Task({
@@ -47,6 +43,8 @@ class Task extends HiveObject {
       'endTime': endTime?.toIso8601String(),
       'createdAt': createdAt.toIso8601String(),
       'completedAt': completedAt?.toIso8601String(),
+      'streak': streak,
+      'lastCompletedDate': lastCompletedDate?.toIso8601String(),
     };
   }
 
@@ -70,6 +68,11 @@ class Task extends HiveObject {
 
       completedAt: json['completedAt'] != null
           ? DateTime.parse(json['completedAt'])
+          : null,
+      streak: json['streak'] ?? 0,
+
+      lastCompletedDate: json['lastCompletedDate'] != null
+          ? DateTime.parse(json['lastCompletedDate'])
           : null,
     );
   }

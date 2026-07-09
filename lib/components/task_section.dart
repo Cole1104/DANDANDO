@@ -187,52 +187,6 @@ class _TaskSectionState extends State<TaskSection> {
     );
   }
 
-  void _showEditDialog(Task task) {
-    final titleController = TextEditingController(text: task.title);
-
-    showDialog(
-      context: context,
-
-      builder: (_) => AlertDialog(
-        title: const Text("Edit Task"),
-
-        content: TextField(
-          controller: titleController,
-
-          decoration: const InputDecoration(labelText: "Title"),
-        ),
-
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-
-            child: const Text("Cancel"),
-          ),
-
-          FilledButton(
-            onPressed: () async {
-              final title = titleController.text.trim();
-
-              if (title.isEmpty) return;
-
-              task.title = title;
-
-              await task.save();
-
-              widget.service.notifyListeners();
-
-              Navigator.pop(context);
-            },
-
-            child: const Text("Save"),
-          ),
-        ],
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final service = widget.service;
