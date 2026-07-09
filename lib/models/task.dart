@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Task {
   String id;
 
@@ -38,41 +40,49 @@ class Task {
       'id': id,
       'title': title,
       'isCompleted': isCompleted,
-      'date': date.toIso8601String(),
-      'startTime': startTime?.toIso8601String(),
-      'endTime': endTime?.toIso8601String(),
-      'createdAt': createdAt.toIso8601String(),
-      'completedAt': completedAt?.toIso8601String(),
+
+      'date': Timestamp.fromDate(date),
+
+      'startTime': startTime == null ? null : Timestamp.fromDate(startTime!),
+
+      'endTime': endTime == null ? null : Timestamp.fromDate(endTime!),
+
+      'createdAt': Timestamp.fromDate(createdAt),
+
+      'completedAt': completedAt == null
+          ? null
+          : Timestamp.fromDate(completedAt!),
+
       'streak': streak,
-      'lastCompletedDate': lastCompletedDate?.toIso8601String(),
+
+      'lastCompletedDate': lastCompletedDate == null
+          ? null
+          : Timestamp.fromDate(lastCompletedDate!),
     };
   }
 
-  factory Task.fromJson(Map<String, dynamic> json) {
+  factory Task.fromFirestore(Map<String, dynamic> json) {
     return Task(
       id: json['id'],
       title: json['title'],
       isCompleted: json['isCompleted'] ?? false,
 
-      date: json['date'] != null
-          ? DateTime.parse(json['date'])
-          : DateTime.now(),
+      date: (json['date'] as Timestamp).toDate(),
 
       startTime: json['startTime'] != null
-          ? DateTime.parse(json['startTime'])
+          ? (json['startTime'] as Timestamp).toDate()
           : null,
-
-      endTime: json['endTime'] != null ? DateTime.parse(json['endTime']) : null,
-
-      createdAt: DateTime.parse(json['createdAt']),
-
+      endTime: json['endTime'] != null
+          ? (json['endTime'] as Timestamp).toDate()
+          : null,
+      createdAt: (json['createdAt'] as Timestamp).toDate(),
       completedAt: json['completedAt'] != null
-          ? DateTime.parse(json['completedAt'])
+          ? (json['completedAt'] as Timestamp).toDate()
           : null,
       streak: json['streak'] ?? 0,
 
       lastCompletedDate: json['lastCompletedDate'] != null
-          ? DateTime.parse(json['lastCompletedDate'])
+          ? (json['lastCompletedDate'] as Timestamp).toDate()
           : null,
     );
   }
